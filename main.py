@@ -1,11 +1,13 @@
 class User:
     def __init__(self, user_id, username, password):
+          # Initializing instances using 'self'
         self.user_id = user_id
         self.username = username
         self.password = password
         self.trips = []  # List to store user's trips
 
     def __str__(self):
+        # Accessing instance variables using 'self' and returning information
         return f"User ID: {self.user_id}, Username: {self.username}"
 
 class Trip:
@@ -72,3 +74,5 @@ trip1 = Trip(1, user1, destination1, start_date, end_date)
 print(user1)
 print(trip1)
 print(destination1)
+
+
