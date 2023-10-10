@@ -52,10 +52,6 @@ for i in range(num_destinations):
 
 # Create an array of Trip objects
 trips = []
-num_trips = int(input("Enter the number of trips you want to plan: "))
-
-# Create an array of Trip objects
-trips = []
 num_trips = 1  # Set the number of trips to 1
 
 # Add a trip to the array
