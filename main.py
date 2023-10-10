@@ -1,4 +1,15 @@
-# Define the Budget class
+# Define the User class
+class User:
+    def __init__(self, user_id, username, password):
+        self.user_id = user_id
+        self.username = username
+        self.password = password
+        self.trips = []  # List to store user's trips
+
+    def __str__(self):
+        return f"User ID: {self.user_id}, Username: {self.username}"
+    
+    # Define the Budget class
 class Budget:
     def __init__(self):
         self.total_budget = 0
@@ -21,17 +32,6 @@ class Destination:
 
     def __str__(self):
         return f"Destination ID: {self.destination_id}, Name: {self.name}"
-
-# Define the User class
-class User:
-    def __init__(self, user_id, username, password):
-        self.user_id = user_id
-        self.username = username
-        self.password = password
-        self.trips = []  # List to store user's trips
-
-    def __str__(self):
-        return f"User ID: {self.user_id}, Username: {self.username}"
 
 # Define the Trip class
 class Trip:
