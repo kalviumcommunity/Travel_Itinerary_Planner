@@ -54,11 +54,15 @@ for i in range(num_destinations):
 trips = []
 num_trips = int(input("Enter the number of trips you want to plan: "))
 
-# Add trips to the array
+# Create an array of Trip objects
+trips = []
+num_trips = 1  # Set the number of trips to 1
+
+# Add a trip to the array
 for i in range(num_trips):
-    destination_id = int(input(f"Enter the destination ID for Trip {i+1}: "))
-    start_date = input(f"Enter the start date for Trip {i+1} (DD-MM-YYYY): ")
-    end_date = input(f"Enter the end date for Trip {i+1} (DD-MM-YYYY): ")
+    destination_id = int(input("Enter the destination ID for the trip: "))
+    start_date = input("Enter the start date for the trip (DD-MM-YYYY): ")
+    end_date = input("Enter the end date for the trip (DD-MM-YYYY): ")
 
     # Find the selected destination object from the destinations array
     selected_destination = next((dest for dest in destinations if dest.destination_id == destination_id), None)
@@ -66,8 +70,11 @@ for i in range(num_trips):
     if selected_destination:
         trip = Trip(i + 1, user1, selected_destination, start_date, end_date)
         trips.append(trip)
+        print(f"Trip to {selected_destination.name} from {start_date} to {end_date} added successfully.")
+        break  # Exit the loop after adding a valid trip
     else:
-        print(f"Invalid destination ID {destination_id}. Trip {i+1} not added.")
+        print(f"Invalid destination ID {destination_id}. Please try again.")
+
 
 # Display user, trips, and destinations information
 print(user1)
