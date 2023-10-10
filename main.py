@@ -1,3 +1,17 @@
+# Define the Budget class
+class Budget:
+    def __init__(self):
+        self.total_budget = 0
+        self.expenses = {}  
+
+        self.expense_categories = ["Accommodation", "Food", "Transportation"]
+
+        for category in self.expense_categories:
+            self.expenses[category] = 0
+
+    def __str__(self):
+        return f"Total Budget: {self.total_budget}"
+
 # Define the Destination class
 class Destination:
     def __init__(self, destination_id, name, location):
@@ -50,9 +64,8 @@ for i in range(num_destinations):
     destination = Destination(i + 1, destination_name, location)
     destinations.append(destination)
 
-# Create an array of Trip objects
-trips = []
-num_trips = 1  # Set the number of trips to 1
+# Set the number of trips to 1
+num_trips = 1
 
 # Add a trip to the array
 for i in range(num_trips):
@@ -60,23 +73,15 @@ for i in range(num_trips):
     start_date = input("Enter the start date for the trip (DD-MM-YYYY): ")
     end_date = input("Enter the end date for the trip (DD-MM-YYYY): ")
 
-    # Find the selected destination object from the destinations array
-    selected_destination = next((dest for dest in destinations if dest.destination_id == destination_id), None)
+    # Assuming destination_id is always valid
+    selected_destination = destinations[destination_id - 1]
 
-    if selected_destination:
-        trip = Trip(i + 1, user1, selected_destination, start_date, end_date)
-        trips.append(trip)
-        print(f"Trip to {selected_destination.name} from {start_date} to {end_date} added successfully.")
-        break  # Exit the loop after adding a valid trip
-    else:
-        print(f"Invalid destination ID {destination_id}. Please try again.")
+    trip = Trip(i + 1, user1, selected_destination, start_date, end_date)
+    user1.trips.append(trip)  # Add the trip object to the user's trips list
+    print(f"Trip to {selected_destination.name} from {start_date} to {end_date} added successfully.")
 
-
-# Display user, trips, and destinations information
-print(user1)
-print("Destinations:")
-for destination in destinations:
-    print(destination)
+# Display user and trip information
+print(f"User Information: {user1}")
 print("Trips:")
-for trip in trips:
+for trip in user1.trips:
     print(trip)
