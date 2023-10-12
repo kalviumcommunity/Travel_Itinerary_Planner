@@ -26,13 +26,13 @@ class Budget:
 # Define the Destination class
 class Destination:
     def __init__(self, destination_id, name, location):
-        self.destination_id = destination_id
-        self.name = name
-        self.location = location
+        self.destination_id = destination_id  
+        self.name = name 
+        self.location = location  
 
     def __str__(self):
-        return f"Destination ID: {self.destination_id}, Name: {self.name}"
-
+        return f"Destination ID: {self.destination_id}, Name: {self.name}"  
+      
 # Define the Trip class
 class Trip:
     def __init__(self, trip_id, user, destination, start_date, end_date):
