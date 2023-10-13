@@ -1,13 +1,13 @@
 CREATE databases travel_planner
 USE travel_planner;
 CREATE TABLE User (
-    user_id INTEGER,
+    user_id INTEGER PRIMARY KEY,
     password VARCHAR(255),
     name TEXT
 );
 
 CREATE TABLE Trip (
-    trip_id INTEGER,
+    trip_id INTEGER PRIMARY KEY,
     user_id integer,
     acommodation_id integer , 
     destination_id integer , 
@@ -16,20 +16,20 @@ CREATE TABLE Trip (
 );
 
 CREATE TABLE Acommodation(
-    acommodation_id INTEGER,
+    acommodation_id INTEGER PRIMARY KEY,
 	name TEXT,
     address VARCHAR(255)
    
 );
 
 CREATE TABLE Destination (
-    destination_id INTEGER,
+    destination_id INTEGER PRIMARY KEY,
     name TEXT,
     address VARCHAR(255)
 );
 
 CREATE TABLE Rooms (
-    room_id INTEGER,
+    room_id INTEGER PRIMARY KEY,
     acommodation_id integer , 
     check_in varchar(225),
     check_out varchar(225),
