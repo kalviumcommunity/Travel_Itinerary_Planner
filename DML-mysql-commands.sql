@@ -3,10 +3,11 @@ show tables;
 
 -- INSERTING data's to the table
 INSERT INTO User (user_id, password, name) VALUES (1, 'user123', 'John Doe');
-INSERT INTO Trip (trip_id, user_id, acommodation_id, destination_id, start_date, end_date)VALUES (1, 1, 1, 1, '2023-10-15', '2023-10-20');
-INSERT INTO acommodation (acommodation_id, name, address) VALUES (1, 'Hotel XYZ', '123 Main St');
-INSERT INTO Destination (destination_id, name, address) VALUES (1, 'City ABC', '456 Elm St');
-INSERT INTO Rooms (room_id, accommodation_id, check_in, check_out, status, no_of_beds)VALUES (1, 1, '2023-10-15', '2023-10-20', 'Available', 2);
+INSERT INTO Trip (trip_id, user_id, accommodation_id, destination_id, start_date, end_date) VALUES (1, 1, 2, 3, '2023-10-15', '2023-10-20');
+INSERT INTO accommodation (accommodation_id, name, address) VALUES (2, 'Hotel XYZ', '123 Main St');
+INSERT INTO Destination (destination_id, name, address) VALUES (3, 'City ABC', '456 Elm St');
+INSERT INTO Rooms (room_id, check_in, check_out, status, no_of_beds)VALUES (1,  '2023-10-15', '2023-10-20', 'Available', 2);
+
 
 -- Update Data in Tables
 
