@@ -42,16 +42,13 @@ class Destination:
 class Room:
     next_room_id = 1
 
-    def __init__(self, status, check_in, check_out, no_of_beds):
+    def __init__(self, no_of_beds):
         self.room_id = Room.next_room_id
         Room.next_room_id += 1
-        self.status = status
-        self.check_in = check_in
-        self.check_out = check_out
         self.no_of_beds = no_of_beds
 
     def __str__(self):
-        return f"Room ID: {self.room_id}, Status: {self.status}, Beds: {self.no_of_beds}, Check-in: {self.check_in}, Check-out: {self.check_out}"
+        return f"Room ID: {self.room_id}, Beds: {self.no_of_beds}"
 
 class Accommodation:
     next_accommodation_id = 1
@@ -63,8 +60,8 @@ class Accommodation:
         self.address = address
         self.rooms = []
 
-    def add_room(self, status, check_in, check_out, no_of_beds):
-        room = Room(status, check_in, check_out, no_of_beds)
+    def add_room(self, no_of_beds):
+        room = Room( no_of_beds)
         self.rooms.append(room)
         return room
 
@@ -98,13 +95,10 @@ destination_location = input("Enter the location for Destination: ")
 destination = Destination(destination_name, destination_location)
 
 # Get room details
-room_status = input("Enter room status: ")
-room_check_in = input("Enter room check-in date (DD-MM-YYYY): ")
-room_check_out = input("Enter room check-out date (DD-MM-YYYY): ")
 room_beds = int(input("Enter number of beds in the room: "))
 
 # Create room object
-room = Room(room_status, room_check_in, room_check_out, room_beds)
+room = Room( room_beds)
 
 # Get accommodation details
 accommodation_name = input("Enter accommodation name: ")
@@ -112,11 +106,11 @@ accommodation_address = input("Enter accommodation address: ")
 
 # Create accommodation object
 accommodation = Accommodation(accommodation_name, accommodation_address)
-accommodation.add_room(room.status, room.check_in, room.check_out, room.no_of_beds)  # Add room to accommodation
+accommodation.add_room(room.no_of_beds)  # Add room to accommodation
 
-# Plan a trip to the destination
-trip_start_date = input("Enter the start date for the trip (DD-MM-YYYY): ")
-trip_end_date = input("Enter the end date for the trip (DD-MM-YYYY): ")
+# Get trip details
+trip_start_date = input("Enter trip start date (DD-MM-YYYY): ")
+trip_end_date = input("Enter trip end date (DD-MM-YYYY): ")
 
 # Create trip object
 trip = Trip(user1, destination, accommodation, trip_start_date, trip_end_date)
@@ -128,6 +122,6 @@ user1.trips.append(trip)
 print(f"\n{user1}")
 print(f"{destination}\n")
 print(f"Accommodation Information:")
-print(accommodation)
+print(f"{accommodation} \n")
 print(f"Trip Information:")
 print(trip)
