@@ -1,51 +1,84 @@
-# Define the User class
 class User:
-    def __init__(self, user_id, username, password):
-        self.user_id = user_id
+    def __init__(self, username, password):
+        self.user_id = self.get_next_user_id()
         self.username = username
         self.password = password
-        self.trips = []  
+        self.trips = []
+
+    @staticmethod
+    def get_next_user_id():
+        try:
+            with open("user_id.txt", "r") as file:
+                user_id = int(file.read())
+        except FileNotFoundError:
+            user_id = 1
+        with open("user_id.txt", "w") as file:
+            file.write(str(user_id + 1))
+        return user_id
 
     def __str__(self):
         return f"User ID: {self.user_id}, Username: {self.username}"
-    
-    # Define the Budget class
-class Budget:
-    def __init__(self):
-        self.total_budget = 0
-        self.expenses = {}  
 
-        self.expense_categories = ["Accommodation", "Food", "Transportation"]
-
-        for category in self.expense_categories:
-            self.expenses[category] = 0
-
-    def __str__(self):
-        return f"Total Budget: {self.total_budget}"
-
-# Define the Destination class
 class Destination:
-    def __init__(self, destination_id, name, location):
-        self.destination_id = destination_id  
-        self.name = name 
-        self.location = location  
+    def __init__(self, name, location):
+        self.destination_id = self.get_next_destination_id()
+        self.name = name
+        self.location = location
+
+    @staticmethod
+    def get_next_destination_id():
+        try:
+            with open("destination_id.txt", "r") as file:
+                destination_id = int(file.read())
+        except FileNotFoundError:
+            destination_id = 1
+        with open("destination_id.txt", "w") as file:
+            file.write(str(destination_id + 1))
+        return destination_id
 
     def __str__(self):
-        return f"Destination ID: {self.destination_id}, Name: {self.name}"  
-      
-# Define the Trip class
+        return f"Destination ID: {self.destination_id}, Name: {self.name}"
+
+class Room:
+    next_room_id = 1
+
+    def __init__(self, no_of_beds):
+        self.room_id = Room.next_room_id
+        Room.next_room_id += 1
+        self.no_of_beds = no_of_beds
+
+    def __str__(self):
+        return f"Room ID: {self.room_id}, Beds: {self.no_of_beds}"
+
+class Accommodation:
+    next_accommodation_id = 1
+
+    def __init__(self, name, address):
+        self.accommodation_id = Accommodation.next_accommodation_id
+        Accommodation.next_accommodation_id += 1
+        self.name = name
+        self.address = address
+        self.rooms = []
+
+    def add_room(self, no_of_beds):
+        room = Room( no_of_beds)
+        self.rooms.append(room)
+        return room
+
+    def __str__(self):
+        return f"Accommodation ID: {self.accommodation_id}, Name: {self.name}, Address: {self.address}"
+
 class Trip:
-    def __init__(self, trip_id, user, destination, start_date, end_date):
-        self.trip_id = trip_id
+    def __init__(self, user, destination, accommodation, start_date, end_date):
+        self.trip_id = destination.destination_id
         self.user = user
         self.destination = destination
+        self.accommodation = accommodation
         self.start_date = start_date
         self.end_date = end_date
-        self.accommodations = [] 
-        self.budget = Budget()  
 
     def __str__(self):
-        return f"Trip ID: {self.trip_id}, Destination: {self.destination.name}, Start Date: {self.start_date}, End Date: {self.end_date}"
+        return f"Trip ID: {self.trip_id}, Destination: {self.destination.name}, Start Date: {self.start_date}, End Date: {self.end_date}, Accommodation: {self.accommodation.name}"
 
 class Destination:
     def __init__(self, destination_id, name, location):
@@ -82,45 +115,46 @@ class Budget:
         return f"Total Budget: {self.total_budget}"
 
 username = input("Enter your username: ")
+password = input("Enter your password: ")
 
+# Create user object
+user1 = User(username, password)
 
-user1 = User(1, username, "password123")
-destination1 = Destination(1, destination_name, "France")
-trip1 = Trip(1, user1, destination1, start_date, end_date)
+# Get destination details
+destination_name = input("Enter the name for Destination: ")
+destination_location = input("Enter the location for Destination: ")
 
-print(user1)
-print(trip1)
-print(destination1)
+# Create destination object
+destination = Destination(destination_name, destination_location)
 
-# Create an array of Destination objects
-destinations = []
-num_destinations = int(input("Enter the number of destinations you want to add: "))
+# Get room details
+room_beds = int(input("Enter number of beds in the room: "))
 
-# Add destinations to the array
-for i in range(num_destinations):
-    destination_name = input(f"Enter the name for Destination {i+1}: ")
-    location = input(f"Enter the location for Destination {i+1}: ")
-    destination = Destination(i + 1, destination_name, location)
-    destinations.append(destination)
+# Create room object
+room = Room( room_beds)
 
-# Set the number of trips to 1
-num_trips = 1
+# Get accommodation details
+accommodation_name = input("Enter accommodation name: ")
+accommodation_address = input("Enter accommodation address: ")
 
-# Add a trip to the array
-for i in range(num_trips):
-    destination_id = int(input("Enter the destination ID for the trip: "))
-    start_date = input("Enter the start date for the trip (DD-MM-YYYY): ")
-    end_date = input("Enter the end date for the trip (DD-MM-YYYY): ")
+# Create accommodation object
+accommodation = Accommodation(accommodation_name, accommodation_address)
+accommodation.add_room(room.no_of_beds)  # Add room to accommodation
 
-    # Assuming destination_id is always valid
-    selected_destination = destinations[destination_id - 1]
+# Get trip details
+trip_start_date = input("Enter trip start date (DD-MM-YYYY): ")
+trip_end_date = input("Enter trip end date (DD-MM-YYYY): ")
 
-    trip = Trip(i + 1, user1, selected_destination, start_date, end_date)
-    user1.trips.append(trip)  # Add the trip object to the user's trips list
-    print(f"Trip to {selected_destination.name} from {start_date} to {end_date} added successfully.")
+# Create trip object
+trip = Trip(user1, destination, accommodation, trip_start_date, trip_end_date)
+
+# Add the trip object to the user's trips list
+user1.trips.append(trip)
 
 # Display user and trip information
-print(f"User Information: {user1}")
-print("Trips:")
-for trip in user1.trips:
-    print(trip)
+print(f"\n{user1}")
+print(f"{destination}\n")
+print(f"Accommodation Information:")
+print(f"{accommodation} \n")
+print(f"Trip Information:")
+print(trip)
