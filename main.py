@@ -125,3 +125,10 @@ print(f"Accommodation Information:")
 print(f"{accommodation} \n")
 print(f"Trip Information:")
 print(trip)
+
+
+
+
+
+
+
