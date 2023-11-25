@@ -103,7 +103,6 @@ class Accommodation(BaseEntity):
     def __str__(self):
         return f"{super().__str__()}, Address: {self._address}, Rooms: {len(self._rooms)}"
 
-
 class Trip(BaseEntity):
     def __init__(self, user, destination, accommodation, start_date, end_date):
         super().__init__(destination.get_name(), "trip_id.txt")
@@ -161,3 +160,4 @@ print(destination)
 print(room)
 print(accommodation)
 print(trip)
+
