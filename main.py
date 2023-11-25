@@ -1,167 +1,163 @@
-class User:
+class BaseEntity:
+    def __init__(self, name, id_file):
+        self._id = self._get_next_id(id_file)
+        self._name = name
+
+    def _get_next_id(self, id_file):
+        try:
+            with open(id_file, "r") as file:
+                entity_id = int(file.read())
+        except FileNotFoundError:
+            entity_id = 1
+
+        with open(id_file, "w") as file:
+            file.write(str(entity_id + 1))
+
+        return entity_id
+
+    def get_id(self):
+        """Getter method for ID."""
+        return self._id
+
+    def get_name(self):
+        """Getter method for name."""
+        return self._name
+
+    def __str__(self):
+        return f"{self.__class__.__name__} ID: {self._id}, Name: {self._name}"
+
+
+class User(BaseEntity):
     def __init__(self, username, password):
-        self.user_id = self.get_next_user_id()
-        self.username = username
-        self.password = password
-        self.trips = []
+        super().__init__(username, "user_id.txt")
+        self._username = username
+        self._password = password
+        self._trips = []
 
-    @staticmethod
-    def get_next_user_id():
-        try:
-            with open("user_id.txt", "r") as file:
-                user_id = int(file.read())
-        except FileNotFoundError:
-            user_id = 1
-        with open("user_id.txt", "w") as file:
-            file.write(str(user_id + 1))
-        return user_id
+    def get_username(self):
+        """Getter method for username."""
+        return self._username
+
+    def get_password(self):
+        """Getter method for password."""
+        return self._password
+
+    def get_trips(self):
+        """Getter method for trips."""
+        return self._trips
 
     def __str__(self):
-        return f"User ID: {self.user_id}, Username: {self.username}"
+        return f"{super().__str__()}, Username: {self._username}"
 
-class Destination:
+
+class Destination(BaseEntity):
     def __init__(self, name, location):
-        self.destination_id = self.get_next_destination_id()
-        self.name = name
-        self.location = location
+        super().__init__(name, "destination_id.txt")
+        self._location = location
 
-    @staticmethod
-    def get_next_destination_id():
-        try:
-            with open("destination_id.txt", "r") as file:
-                destination_id = int(file.read())
-        except FileNotFoundError:
-            destination_id = 1
-        with open("destination_id.txt", "w") as file:
-            file.write(str(destination_id + 1))
-        return destination_id
+    def get_location(self):
+        """Getter method for location."""
+        return self._location
 
     def __str__(self):
-        return f"Destination ID: {self.destination_id}, Name: {self.name}"
+        return f"{super().__str__()}, Location: {self._location}"
 
-class Room:
+
+class Room(BaseEntity):
     next_room_id = 1
 
     def __init__(self, no_of_beds):
-        self.room_id = Room.next_room_id
+        super().__init__(f"Room-{Room.next_room_id}", "room_id.txt")
         Room.next_room_id += 1
-        self.no_of_beds = no_of_beds
+        self._no_of_beds = no_of_beds
+
+    def get_no_of_beds(self):
+        """Getter method for the number of beds."""
+        return self._no_of_beds
 
     def __str__(self):
-        return f"Room ID: {self.room_id}, Beds: {self.no_of_beds}"
+        return f"{super().__str__()}, Beds: {self._no_of_beds}"
 
-class Accommodation:
+
+class Accommodation(BaseEntity):
     next_accommodation_id = 1
 
     def __init__(self, name, address):
-        self.accommodation_id = Accommodation.next_accommodation_id
-        Accommodation.next_accommodation_id += 1
-        self.name = name
-        self.address = address
-        self.rooms = []
+        super().__init__(name, "accommodation_id.txt")
+        self._address = address
+        self._rooms = []
 
     def add_room(self, no_of_beds):
-        room = Room( no_of_beds)
-        self.rooms.append(room)
+        room = Room(no_of_beds)
+        self._rooms.append(room)
         return room
 
-    def __str__(self):
-        return f"Accommodation ID: {self.accommodation_id}, Name: {self.name}, Address: {self.address}"
+    def get_address(self):
+        """Getter method for address."""
+        return self._address
 
-class Trip:
+    def get_rooms(self):
+        """Getter method for rooms."""
+        return self._rooms
+
+    def __str__(self):
+        return f"{super().__str__()}, Address: {self._address}, Rooms: {len(self._rooms)}"
+
+class Trip(BaseEntity):
     def __init__(self, user, destination, accommodation, start_date, end_date):
-        self.trip_id = destination.destination_id
-        self.user = user
-        self.destination = destination
-        self.accommodation = accommodation
-        self.start_date = start_date
-        self.end_date = end_date
+        super().__init__(destination.get_name(), "trip_id.txt")
+        self._user = user
+        self._destination = destination
+        self._accommodation = accommodation
+        self._start_date = start_date
+        self._end_date = end_date
+
+    def get_user(self):
+        """Getter method for the user."""
+        return self._user
+
+    def get_destination(self):
+        """Getter method for the destination."""
+        return self._destination
+
+    def get_accommodation(self):
+        """Getter method for the accommodation."""
+        return self._accommodation
+
+    def get_start_date(self):
+        """Getter method for the start date."""
+        return self._start_date
+
+    def get_end_date(self):
+        """Getter method for the end date."""
+        return self._end_date
 
     def __str__(self):
-        return f"Trip ID: {self.trip_id}, Destination: {self.destination.name}, Start Date: {self.start_date}, End Date: {self.end_date}, Accommodation: {self.accommodation.name}"
+        return f"{super().__str__()}, User: {self._user.get_name()}, Destination: {self._destination.get_name()}, Accommodation: {self._accommodation.get_name()}, Start Date: {self._start_date}, End Date: {self._end_date}"
 
-class Destination:
-    def __init__(self, destination_id, name, location):
-        self.destination_id = destination_id
-        self.name = name
-        self.location = location
 
-    def __str__(self):
-        return f"Destination ID: {self.destination_id}, Name: {self.name}"
+# Example Usage:
 
-class Accommodation:
-    def __init__(self, accommodation_id, name, address, check_in, check_out):
-        self.accommodation_id = accommodation_id
-        self.name = name
-        self.address = address
-        self.check_in = check_in
-        self.check_out = check_out
-        self.is_booked = False  
+# Create User
+user = User("JohnDoe", "password123")
 
-    def __str__(self):
-        return f"Accommodation ID: {self.accommodation_id}, Name: {self.name}, Address: {self.address}"
+# Create Destination
+destination = Destination("Paris", "France")
 
-class Budget:
-    def __init__(self):
-        self.total_budget = 0
-        self.expenses = {}  
+# Create Room
+room = Room(2)
 
-        self.expense_categories = ["Accommodation", "Food", "Transportation"]
+# Create Accommodation
+accommodation = Accommodation("Hotel XYZ", "123 Main St")
+accommodation.add_room(room.get_no_of_beds())
 
-        for category in self.expense_categories:
-            self.expenses[category] = 0
+# Create Trip
+trip = Trip(user, destination, accommodation, "2023-11-01", "2023-11-07")
 
-    def __str__(self):
-        return f"Total Budget: {self.total_budget}"
-
-username = input("Enter your username: ")
-password = input("Enter your password: ")
-
-# Create user object
-user1 = User(username, password)
-
-# Get destination details
-destination_name = input("Enter the name for Destination: ")
-destination_location = input("Enter the location for Destination: ")
-
-# Create destination object
-destination = Destination(destination_name, destination_location)
-
-# Get room details
-room_beds = int(input("Enter number of beds in the room: "))
-
-# Create room object
-room = Room( room_beds)
-
-# Get accommodation details
-accommodation_name = input("Enter accommodation name: ")
-accommodation_address = input("Enter accommodation address: ")
-
-# Create accommodation object
-accommodation = Accommodation(accommodation_name, accommodation_address)
-accommodation.add_room(room.no_of_beds)  # Add room to accommodation
-
-# Get trip details
-trip_start_date = input("Enter trip start date (DD-MM-YYYY): ")
-trip_end_date = input("Enter trip end date (DD-MM-YYYY): ")
-
-# Create trip object
-trip = Trip(user1, destination, accommodation, trip_start_date, trip_end_date)
-
-# Add the trip object to the user's trips list
-user1.trips.append(trip)
-
-# Display user and trip information
-print(f"\n{user1}")
-print(f"{destination}\n")
-print(f"Accommodation Information:")
-print(f"{accommodation} \n")
-print(f"Trip Information:")
+# Print information
+print(user)
+print(destination)
+print(room)
+print(accommodation)
 print(trip)
-
-
-
-
-
-
 
