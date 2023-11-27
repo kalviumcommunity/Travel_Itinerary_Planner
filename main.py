@@ -16,11 +16,9 @@ class BaseEntity:
         return entity_id
 
     def get_id(self):
-        """Getter method for ID."""
         return self._id
 
     def get_name(self):
-        """Getter method for name."""
         return self._name
 
     def __str__(self):
@@ -35,15 +33,12 @@ class User(BaseEntity):
         self._trips = []
 
     def get_username(self):
-        """Getter method for username."""
         return self._username
 
     def get_password(self):
-        """Getter method for password."""
         return self._password
 
     def get_trips(self):
-        """Getter method for trips."""
         return self._trips
 
     def __str__(self):
@@ -56,7 +51,6 @@ class Destination(BaseEntity):
         self._location = location
 
     def get_location(self):
-        """Getter method for location."""
         return self._location
 
     def __str__(self):
@@ -72,7 +66,6 @@ class Room(BaseEntity):
         self._no_of_beds = no_of_beds
 
     def get_no_of_beds(self):
-        """Getter method for the number of beds."""
         return self._no_of_beds
 
     def __str__(self):
@@ -93,11 +86,9 @@ class Accommodation(BaseEntity):
         return room
 
     def get_address(self):
-        """Getter method for address."""
         return self._address
 
     def get_rooms(self):
-        """Getter method for rooms."""
         return self._rooms
 
     def __str__(self):
