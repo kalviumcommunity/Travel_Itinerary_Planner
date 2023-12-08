@@ -1,7 +1,29 @@
-class BaseEntity:
+from abc import ABC, abstractmethod
+
+class BaseEntity(ABC):
     def __init__(self, name, id_file):
         self._id = self._get_next_id(id_file)
         self._name = name
+
+    @abstractmethod
+    def _get_next_id(self, id_file):
+        pass
+
+    def get_id(self):
+        return self._id
+
+    def get_name(self):
+        return self._name
+
+    def __str__(self):
+        return f"{self.__class__.__name__} ID: {self._id}, Name: {self._name}"
+
+class User(BaseEntity):
+    def __init__(self, username, password):
+        super().__init__(username, "user_id.txt")
+        self._username = username
+        self._password = password
+        self._trips = []
 
     def _get_next_id(self, id_file):
         try:
@@ -15,23 +37,6 @@ class BaseEntity:
 
         return entity_id
 
-    def get_id(self):
-        return self._id
-
-    def get_name(self):
-        return self._name
-
-    def __str__(self):
-        return f"{self.__class__.__name__} ID: {self._id}, Name: {self._name}"
-
-
-class User(BaseEntity):
-    def __init__(self, username, password):
-        super().__init__(username, "user_id.txt")
-        self._username = username
-        self._password = password
-        self._trips = []
-
     def get_username(self):
         return self._username
 
@@ -44,18 +49,28 @@ class User(BaseEntity):
     def __str__(self):
         return f"{super().__str__()}, Username: {self._username}"
 
-
 class Destination(BaseEntity):
     def __init__(self, name, location):
         super().__init__(name, "destination_id.txt")
         self._location = location
+
+    def _get_next_id(self, id_file):
+        try:
+            with open(id_file, "r") as file:
+                entity_id = int(file.read())
+        except FileNotFoundError:
+            entity_id = 1
+
+        with open(id_file, "w") as file:
+            file.write(str(entity_id + 1))
+
+        return entity_id
 
     def get_location(self):
         return self._location
 
     def __str__(self):
         return f"{super().__str__()}, Location: {self._location}"
-
 
 class Room(BaseEntity):
     next_room_id = 1
@@ -65,12 +80,23 @@ class Room(BaseEntity):
         Room.next_room_id += 1
         self._no_of_beds = no_of_beds
 
+    def _get_next_id(self, id_file):
+        try:
+            with open(id_file, "r") as file:
+                entity_id = int(file.read())
+        except FileNotFoundError:
+            entity_id = 1
+
+        with open(id_file, "w") as file:
+            file.write(str(entity_id + 1))
+
+        return entity_id
+
     def get_no_of_beds(self):
         return self._no_of_beds
 
     def __str__(self):
         return f"{super().__str__()}, Beds: {self._no_of_beds}"
-
 
 class Accommodation(BaseEntity):
     next_accommodation_id = 1
@@ -79,6 +105,18 @@ class Accommodation(BaseEntity):
         super().__init__(name, "accommodation_id.txt")
         self._address = address
         self._rooms = []
+
+    def _get_next_id(self, id_file):
+        try:
+            with open(id_file, "r") as file:
+                entity_id = int(file.read())
+        except FileNotFoundError:
+            entity_id = 1
+
+        with open(id_file, "w") as file:
+            file.write(str(entity_id + 1))
+
+        return entity_id
 
     def add_room(self, no_of_beds):
         room = Room(no_of_beds)
@@ -103,6 +141,18 @@ class Trip(BaseEntity):
         self._start_date = start_date
         self._end_date = end_date
 
+    def _get_next_id(self, id_file):
+        try:
+            with open(id_file, "r") as file:
+                entity_id = int(file.read())
+        except FileNotFoundError:
+            entity_id = 1
+
+        with open(id_file, "w") as file:
+            file.write(str(entity_id + 1))
+
+        return entity_id
+
     def get_user(self):
         """Getter method for the user."""
         return self._user
@@ -125,7 +175,6 @@ class Trip(BaseEntity):
 
     def __str__(self):
         return f"{super().__str__()}, User: {self._user.get_name()}, Destination: {self._destination.get_name()}, Accommodation: {self._accommodation.get_name()}, Start Date: {self._start_date}, End Date: {self._end_date}"
-
 
 # Example Usage:
 
@@ -151,4 +200,3 @@ print(destination)
 print(room)
 print(accommodation)
 print(trip)
-
