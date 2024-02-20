@@ -21,6 +21,13 @@ DELETE FROM User WHERE user_id = 1;
 DELETE FROM Trip WHERE trip_id = 1;
 DELETE FROM Rooms WHERE room_id = 1;
 
+-- example
+-- 1.creating index for name 
 
+
+-- 2. creating index for name and address
+
+
+-- 3. retriving name and address;
 
 
