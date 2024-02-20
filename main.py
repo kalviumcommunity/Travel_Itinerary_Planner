@@ -9,6 +9,10 @@ class BaseEntity(ABC):
     def _get_next_id(self, id_file):
         pass
 
+    @abstractmethod
+    def get_summary(self):
+        pass
+
     def get_id(self):
         return self._id
 
@@ -37,18 +41,12 @@ class User(BaseEntity):
 
         return entity_id
 
-    def get_username(self):
-        return self._username
-
-    def get_password(self):
-        return self._password
-
-    def get_trips(self):
-        return self._trips
+    def get_summary(self):
+        return f"Username: {self._username}"
 
     def __str__(self):
-        return f"{super().__str__()}, Username: {self._username}"
-
+        return f"{super().__str__()}, {self.get_summary()}"
+# Destination class implementing the SummaryInterface
 class Destination(BaseEntity):
     def __init__(self, name, location):
         super().__init__(name, "destination_id.txt")
@@ -66,12 +64,16 @@ class Destination(BaseEntity):
 
         return entity_id
 
+    def get_summary(self):
+        return f"Location: {self._location}"
+
     def get_location(self):
         return self._location
 
     def __str__(self):
-        return f"{super().__str__()}, Location: {self._location}"
+        return f"{super().__str__()}, {self.get_summary()}"
 
+# Room class remains unchanged
 class Room(BaseEntity):
     next_room_id = 1
 
@@ -98,6 +100,7 @@ class Room(BaseEntity):
     def __str__(self):
         return f"{super().__str__()}, Beds: {self._no_of_beds}"
 
+# Accommodation class remains unchanged
 class Accommodation(BaseEntity):
     next_accommodation_id = 1
 
@@ -132,6 +135,7 @@ class Accommodation(BaseEntity):
     def __str__(self):
         return f"{super().__str__()}, Address: {self._address}, Rooms: {len(self._rooms)}"
 
+# Trip class remains unchanged
 class Trip(BaseEntity):
     def __init__(self, user, destination, accommodation, start_date, end_date):
         super().__init__(destination.get_name(), "trip_id.txt")
