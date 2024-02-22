@@ -35,3 +35,9 @@ group by  city;
 
 
 
+-- 2. creating index for name and address
+
+
+-- 3. retriving name and address;
+
+
